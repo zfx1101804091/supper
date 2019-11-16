@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>这是个测试页面</title>
+</head>
+<body>
+    <h2>大家好，我叫张三</h2>
+    <table>
+        <tr>
+            <td>姓名</td>
+            <td>年龄</td>
+            <td>性别</td>
+        </tr>
+        <tr>
+            <td th:text="${name}"></td>
+            <td th:text="${age}"></td>
+            <td th:text="${sex}"></td>
+        </tr>
+    </table>
+</body>
+</html>
