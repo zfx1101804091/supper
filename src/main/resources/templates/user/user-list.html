@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>用户列表</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" th:href="@{/xadmin/css/font.css}">
+        <link rel="stylesheet" th:href="@{/xadmin//css/xadmin.css}">
+        <script th:src="@{/xadmin/lib/layui/layui.js}" charset="utf-8"></script>
+        <script type="text/javascript" th:src="@{/xadmin/js/xadmin.js}"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <table id="demo" lay-filter="test"></table>
+    
+        <script>
+          //加载模块：table，laddate,form,如果只加载一个模块，可以不填数组
+          layui.use('table', function(){
+              var table = layui.table;
+    
+              //第一个实例
+              table.render({
+                  elem: '#demo'
+                  ,height: 312
+                  ,url: '/user/list' //数据接口
+                  //如果你想重新规定返回的数据格式，那么可以借助 response 参数，如：
+                  ,response: {
+                     /* statusName: 'status' //规定数据状态的字段名称，默认：code
+                      ,statusCode: 200 //规定成功的状态码，默认：0
+                      ,msgName: 'hint' //规定状态信息的字段名称，默认：msg
+                      ,countName: 'total' //规定数据总数的字段名称，默认：count,*/
+                     
+                      dataName: 'datas' //规定数据列表的字段名称，默认：data
+                  }
+                  //,page: true //开启分页
+                  ,cols: [
+                      [ //表头
+                      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+                      ,{field: 'username', title: '用户名', width:80}
+                      ,{field: 'nickname', title: '角色名', width:80}
+                      ,{field: 'telephone', title: '手机号', width:80, sort: true}
+                      ,{field: 'sign', title: '签名', width: 177}
+                      ,{field: 'experience', title: '积分', width: 80, sort: true}
+                      ,{field: 'score', title: '评分', width: 80, sort: true}
+                      ,{field: 'classify', title: '职业', width: 80}
+                      ,{field: 'wealth', title: '财富', width: 135, sort: true}
+                      ]
+                  ]
+              });
+    
+          });
+        </script>
+    </body>
+</html>

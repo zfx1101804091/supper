@@ -1,6 +1,6 @@
 package com.zfx.supper.controller;
 
-import com.zfx.supper.mapper.UserMapper;
+import com.zfx.supper.base.result.Results;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
 
 /**
  * @description:
@@ -38,5 +40,15 @@ public class UserController {
         log.debug("UserController.getUserByName()---parms:{}",username);
         log.debug("UserController.getUserByName()--response:{}",user.toString());
         return user;
+    }
+
+    @RequestMapping("/list")
+    @ResponseBody
+    public Results<SysUser> list(){
+
+        ArrayList<SysUser> list = new ArrayList<>();
+        list.add(userservice.getUserByName("zfx"));
+        log.debug("list----{}",list);
+        return Results.success("success",100,list);
     }
 }

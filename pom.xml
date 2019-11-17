@@ -74,7 +74,7 @@
 		</dependency>
 
 		<!--slfj和logback整合 开始-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.25</version>
@@ -90,7 +90,7 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>1.2.3</version>
-		</dependency>
+		</dependency>-->
 		<!--slfj和logback整合 结束-->
 	</dependencies>
 
