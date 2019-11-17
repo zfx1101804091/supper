@@ -35,8 +35,8 @@ public class UserController {
     public SysUser getUserByName(@PathVariable String username){
         SysUser user = userservice.getUserByName(username);
         
-        log.info("UserController.getUserByName()---parms:{}",username);
-        log.info("UserController.getUserByName()--response:{}",user.toString());
+        log.debug("UserController.getUserByName()---parms:{}",username);
+        log.debug("UserController.getUserByName()--response:{}",user.toString());
         return user;
     }
 }

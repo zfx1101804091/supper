@@ -8,7 +8,7 @@
     <!--<property name="log.path" value="D:/bmslog" />
     先去配置文件找log.path变量，有的话用设置的，没有就用默认的
     -->
-    <springProperty scope="context" name="log.path" source="logging.path" defaultValue="/home/logs/supper"/>
+    <springProperty scope="context" name="log.path" source="log.path" defaultValue="/home/logs/supper"/>
     <contextName>logback</contextName>
 
     <!-- 彩色日志 -->
@@ -174,19 +174,31 @@
         不能设置为INHERITED或者同义词NULL。默认是DEBUG
         可以包含零个或多个元素，标识这个appender将会添加到这个logger。
     -->
-
+   
     <!-- 多环境配置管理 -->
     <!--开发环境:打印控制台-->
     <springProfile name="dev">
         <root level="info">
          <!--<logger name="com.nmys.view" level="debug"/>-->
             <appender-ref ref="CONSOLE"  />
-            <appender-ref ref="DEBUG_FILE" />
+           <!-- <appender-ref ref="DEBUG_FILE" />-->
             <appender-ref ref="INFO_FILE" />
             <appender-ref ref="WARN_FILE" />
             <appender-ref ref="ERROR_FILE" />
         </root>
+        
+        <logger name="com.zfx.supper.controller" level="DEBUG">
+            <appender-ref ref="DEBUG_FILE" />
+        </logger>
+
+       
+        
+        <logger name="com.zfx.supper.mapper" level="DEBUG">
+            <appender-ref ref="DEBUG_FILE" />
+        </logger>
+        
     </springProfile>
+    
     <!--线上环境:-->
     <springProfile name="prod">
         <root level="info">
@@ -206,5 +218,7 @@
             <appender-ref ref="ERROR_FILE" />
         </root>
     </springProfile>
+
+   
 
 </configuration>
