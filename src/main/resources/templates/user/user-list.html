@@ -16,8 +16,24 @@
         <![endif]-->
     </head>
     <body>
-        <table id="demo" lay-filter="test"></table>
     
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+                <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+                <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+            </div>
+        </script>
+    
+        <table id="demo" lay-filter="test"></table>
+        
+        
+        
         <script>
           //加载模块：table，laddate,form,如果只加载一个模块，可以不填数组
           layui.use('table', function(){
@@ -26,29 +42,28 @@
               //第一个实例
               table.render({
                   elem: '#demo'
-                  ,height: 312
+                  //,height: 312
                   ,url: '/user/list' //数据接口
-                  //如果你想重新规定返回的数据格式，那么可以借助 response 参数，如：
+                  ,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                  //如果你想重新规定返回的数据格式，那么可以借助 response 参数
                   ,response: {
-                     /* statusName: 'status' //规定数据状态的字段名称，默认：code
-                      ,statusCode: 200 //规定成功的状态码，默认：0
-                      ,msgName: 'hint' //规定状态信息的字段名称，默认：msg
-                      ,countName: 'total' //规定数据总数的字段名称，默认：count,*/
-                     
                       dataName: 'datas' //规定数据列表的字段名称，默认：data
                   }
-                  //,page: true //开启分页
+                  ,page: true //开启分页
                   ,cols: [
-                      [ //表头
-                      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-                      ,{field: 'username', title: '用户名', width:80}
-                      ,{field: 'nickname', title: '角色名', width:80}
-                      ,{field: 'telephone', title: '手机号', width:80, sort: true}
-                      ,{field: 'sign', title: '签名', width: 177}
-                      ,{field: 'experience', title: '积分', width: 80, sort: true}
-                      ,{field: 'score', title: '评分', width: 80, sort: true}
-                      ,{field: 'classify', title: '职业', width: 80}
-                      ,{field: 'wealth', title: '财富', width: 135, sort: true}
+                      [
+                       {type:'checkbox',fixed:'left'}
+                      ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                      ,{field: 'username', title: '用户名' }
+                      ,{field: 'nickname', title: '角色名'}
+                      ,{field: 'telephone', title: '手机号', sort: true}
+                      ,{field: 'status', title: '状态', templet:function(d){
+                          return d.status=='1'
+                              ?'<span style="color: chocolate; font-weight:bold;font-size:20px; ">启动</span>'
+                              :'<span style="color: #0000FF; font-weight:bold;font-size:20px; ">禁用</span>';
+                          }}
+                      ,{field: 'birthday', title: '生日'}
+                      ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
                       ]
                   ]
               });

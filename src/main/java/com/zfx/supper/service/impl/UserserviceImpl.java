@@ -1,5 +1,6 @@
 package com.zfx.supper.service.impl;
 
+import com.zfx.supper.base.result.Results;
 import com.zfx.supper.mapper.UserMapper;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
@@ -21,5 +22,10 @@ public class UserserviceImpl implements Userservice {
     @Override
     public SysUser getUserByName(String username) {
         return userMapper.getUserByName(username);
+    }
+
+    @Override
+    public Results<SysUser> getAllUserByPage(Integer offset, Integer limit) {
+        return Results.success(userMapper.countAllUsers().intValue(),userMapper.getAllUsersByPage(offset,limit));
     }
 }
