@@ -38,7 +38,6 @@ public class UserController {
     public SysUser getUserByName(@PathVariable String username){
         SysUser user = userservice.getUserByName(username);
         
-        log.debug("UserController.getUserByName()---parms:{}",username);
         log.debug("UserController.getUserByName()--response:{}",user.toString());
         return user;
     }
@@ -50,5 +49,20 @@ public class UserController {
         pageTable.countOffset();
       
         return userservice.getAllUserByPage(pageTable.getOffset(),pageTable.getLimit());
+    }
+
+    /*
+     * 功能描述: 新增用户信息
+     * 
+     * @Param: [model]
+     * @Return: java.lang.String
+     * @Author: Administrator
+     * @Date: 2019/11/17 0017 23:03
+     */
+    @RequestMapping("/add")
+    public String addUser(Model model){
+        //初始化SysUser，防止前端thymeleaf取值时报异常 th:value="${sysUser.sex}"
+        model.addAttribute(new SysUser());
+        return "user/user-add";
     }
 }
