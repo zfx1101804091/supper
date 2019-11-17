@@ -1,5 +1,6 @@
 package com.zfx.supper.controller;
 
+import com.zfx.supper.base.result.PageTableRequest;
 import com.zfx.supper.base.result.Results;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
@@ -44,11 +45,10 @@ public class UserController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public Results<SysUser> list(){
+    public Results<SysUser> list(PageTableRequest pageTable){
 
-        ArrayList<SysUser> list = new ArrayList<>();
-        list.add(userservice.getUserByName("zfx"));
-        log.debug("list----{}",list);
-        return Results.success("success",100,list);
+        pageTable.countOffset();
+      
+        return userservice.getAllUserByPage(pageTable.getOffset(),pageTable.getLimit());
     }
 }
