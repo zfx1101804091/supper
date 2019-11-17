@@ -1,7 +1,10 @@
 package com.zfx.supper.service.impl;
 
 import com.zfx.supper.base.result.Results;
+import com.zfx.supper.dto.UserDto;
+import com.zfx.supper.mapper.RoleUserMapper;
 import com.zfx.supper.mapper.UserMapper;
+import com.zfx.supper.model.SysRoleUser;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,10 @@ public class UserserviceImpl implements Userservice {
     
     @Autowired
     public UserMapper userMapper;
+    
+    @Autowired
+    public RoleUserMapper roleUserMapper;
+    
     @Override
     public SysUser getUserByName(String username) {
         return userMapper.getUserByName(username);
@@ -27,5 +34,20 @@ public class UserserviceImpl implements Userservice {
     @Override
     public Results<SysUser> getAllUserByPage(Integer offset, Integer limit) {
         return Results.success(userMapper.countAllUsers().intValue(),userMapper.getAllUsersByPage(offset,limit));
+    }
+
+    @Override
+    public Results<SysUser> save(SysUser sysUser, Integer roleId) {
+
+        if(roleId!=null){
+            userMapper.save(sysUser);
+            SysRoleUser sysRoleUser = new SysRoleUser();
+            sysRoleUser.setRoleId(roleId);
+            sysRoleUser.setUserId(sysUser.getId().intValue());
+            
+            roleUserMapper.save(sysRoleUser);
+            return Results.success();
+        }
+        return Results.failure();
     }
 }

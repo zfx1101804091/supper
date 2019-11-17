@@ -1,9 +1,8 @@
 package com.zfx.supper.mapper;
 
+import com.zfx.supper.dto.UserDto;
 import com.zfx.supper.model.SysUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -24,4 +23,11 @@ public interface UserMapper {
      */
     @Select("select count(*) from sys_user")
     Long countAllUsers();
+
+    /*
+     * 功能描述: 新增用户 useGeneratedKeys 主键id自增长
+     */
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("insert into sys_user(username, password, nickname, headImgUrl, phone, telephone, email, birthday, sex, status, createTime, updateTime) values(#{username}, #{password}, #{nickname}, #{headImgUrl}, #{phone}, #{telephone}, #{email}, #{birthday}, #{sex}, #{status}, now(), now())")
+    int save(SysUser user);
 }

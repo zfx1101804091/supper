@@ -2,17 +2,23 @@ package com.zfx.supper.controller;
 
 import com.zfx.supper.base.result.PageTableRequest;
 import com.zfx.supper.base.result.Results;
+import com.zfx.supper.dto.UserDto;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
+import com.zfx.supper.util.MD5;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
+import javax.jws.WebResult;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @description:
@@ -64,5 +70,24 @@ public class UserController {
         //初始化SysUser，防止前端thymeleaf取值时报异常 th:value="${sysUser.sex}"
         model.addAttribute(new SysUser());
         return "user/user-add";
+    }
+
+    @PostMapping("/add")
+    @ResponseBody
+    public Results<SysUser> saveUser(UserDto userDto, Integer roleId){
+        userDto.setStatus(1);
+        userDto.setPassword(MD5.crypt(userDto.getPassword()));
+
+        Results<SysUser> results = userservice.save(userDto, roleId);
+        return results;
+    }
+    
+    
+    String patttern = "yyyy-MM-dd";
+    @InitBinder
+    public void initBinder(WebDataBinder binder, WebRequest request){
+        
+        binder.registerCustomEditor(Date.class,new CustomDateEditor(new SimpleDateFormat(patttern),true));
+        
     }
 }

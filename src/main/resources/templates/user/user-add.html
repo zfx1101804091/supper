@@ -132,6 +132,7 @@
 
         //监听提交
         form.on('submit(add)', function(data){
+            //获取选择项的值
             var rolelRadio = $("[name=roleId]:checked");
             if(rolelRadio == undefined || rolelRadio.length <= 0){
                 layer.alert("请给该用户设置角色");
