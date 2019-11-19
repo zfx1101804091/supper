@@ -27,4 +27,10 @@ public interface Userservice {
      * @Date: 2019/11/18 0018 1:45
      */
     Results<SysUser> save(SysUser sysUser, Integer roleId);
+
+    SysUser getUserByPhone(String telephone);
+
+    SysUser getUserById(Long id);
+
+    Results<SysUser> updateUser(UserDto userDto, Integer roleId);
 }

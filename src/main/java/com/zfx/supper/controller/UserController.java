@@ -1,6 +1,7 @@
 package com.zfx.supper.controller;
 
 import com.zfx.supper.base.result.PageTableRequest;
+import com.zfx.supper.base.result.ResponseCode;
 import com.zfx.supper.base.result.Results;
 import com.zfx.supper.dto.UserDto;
 import com.zfx.supper.model.SysUser;
@@ -15,9 +16,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.jws.WebResult;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -75,6 +74,14 @@ public class UserController {
     @PostMapping("/add")
     @ResponseBody
     public Results<SysUser> saveUser(UserDto userDto, Integer roleId){
+        
+        SysUser sysUser = null;
+        sysUser = userservice.getUserByPhone(userDto.getTelephone());
+        
+        if(sysUser!=null&&!(sysUser.getId().equals(userDto.getId()))){
+            return Results.failure(ResponseCode.PHONE_REPEAT.getCode(),ResponseCode.PHONE_REPEAT.getMessage());
+        }
+        
         userDto.setStatus(1);
         userDto.setPassword(MD5.crypt(userDto.getPassword()));
 
@@ -90,4 +97,25 @@ public class UserController {
         binder.registerCustomEditor(Date.class,new CustomDateEditor(new SimpleDateFormat(patttern),true));
         
     }
+
+    @GetMapping("/edit")
+    public String editUser(Model model,SysUser sysUser){
+        
+        model.addAttribute(userservice.getUserById(sysUser.getId()));
+        return "user/user-edit";
+    }
+
+    @PostMapping("/edit")
+    @ResponseBody
+    public Results<SysUser> updateUser(UserDto userDto,Integer roleId){
+
+        SysUser sysUser = null;
+        sysUser = userservice.getUserByPhone(userDto.getTelephone());
+
+        if(sysUser!=null&&!(sysUser.getId().equals(userDto.getId()))){
+            return Results.failure(ResponseCode.PHONE_REPEAT.getCode(),ResponseCode.PHONE_REPEAT.getMessage());
+        }
+        return userservice.updateUser(userDto,roleId);
+    }
+    
 }

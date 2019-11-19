@@ -50,4 +50,35 @@ public class UserserviceImpl implements Userservice {
         }
         return Results.failure();
     }
+
+    @Override
+    public SysUser getUserByPhone(String telephone) {
+        
+        return userMapper.getUserByPhone(telephone);
+    }
+
+    @Override
+    public SysUser getUserById(Long id) {
+        return userMapper.getUserById(id);
+    }
+
+    @Override
+    public Results<SysUser> updateUser(UserDto userDto, Integer roleId) {
+        
+        if(roleId != null){
+            userMapper.updateUser(userDto);
+            SysRoleUser sysRoleUser = new SysRoleUser();
+            
+            sysRoleUser.setUserId(userDto.getId().intValue());
+            sysRoleUser.setRoleId(roleId);
+            if(roleUserMapper.getSysRoleUserByUserId(userDto.getId().intValue())!= null){
+                roleUserMapper.updateSysRoleUser(sysRoleUser);
+            }else{
+                roleUserMapper.save(sysRoleUser);
+            }
+            return Results.success();
+        }else{
+            return Results.failure();
+        }
+    }
 }

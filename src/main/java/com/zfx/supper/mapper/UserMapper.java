@@ -30,4 +30,14 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("insert into sys_user(username, password, nickname, headImgUrl, phone, telephone, email, birthday, sex, status, createTime, updateTime) values(#{username}, #{password}, #{nickname}, #{headImgUrl}, #{phone}, #{telephone}, #{email}, #{birthday}, #{sex}, #{status}, now(), now())")
     int save(SysUser user);
+
+    
+    @Select("select * from sys_user t where t.telephone=#{telephone}")
+    SysUser getUserByPhone(String telephone);
+
+    @Select("select * from sys_user t where t.id=#{id}")
+    SysUser getUserById(Long id);
+
+    
+    int updateUser(UserDto userDto);
 }

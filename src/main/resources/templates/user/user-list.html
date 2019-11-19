@@ -87,23 +87,51 @@
                   }
                   ,page: true //开启分页
                   ,cols: [
-                      [
-                       {type:'checkbox',fixed:'left'}
-                      ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
-                      ,{field: 'username', title: '用户名' }
-                      ,{field: 'nickname', title: '角色名'}
-                      ,{field: 'telephone', title: '手机号', sort: true}
-                      ,{field: 'status', title: '状态', templet:function(d){
-                          return d.status=='1'
-                              ?'<span style="color: chocolate; font-weight:bold;font-size:20px; ">启动</span>'
-                              :'<span style="color: #0000FF; font-weight:bold;font-size:20px; ">禁用</span>';
-                          }}
-                      ,{field: 'birthday', title: '生日'}
-                      ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                      [ //表头
+                           {type:'checkbox',fixed:'left'}
+                          ,{field: 'id', title: 'ID',  sort: true, fixed: 'left'}
+                          ,{field: 'username', title: '用户名' }
+                          ,{field: 'nickname', title: '角色名'}
+                          ,{field: 'telephone', title: '手机号', sort: true}
+                          ,{field: 'status', title: '状态', templet:function(d){
+                              return d.status=='1'
+                                  ?'<span style="color: chocolate; font-weight:bold;font-size:20px; ">启动</span>'
+                                  :'<span style="color: #0000FF; font-weight:bold;font-size:20px; ">禁用</span>';
+                              }}
+                          ,{field: 'birthday', title: '生日'}
+                          ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
                       ]
                   ]
               });
     
+          
+
+          //监听工具条
+          table.on('tool(member)', function(obj){
+              var data = obj.data;
+              if(obj.event === 'del'){
+                  layer.confirm('真的删除行么', function(index){
+
+                      $.ajax({
+                          url:"/user/delete",
+                          type:"GET",
+                          data:{id:data.id},
+                          dataType:'json',
+                          success:function(result){
+                              layer.alert("删除成功", {icon: 1},function (index1) {
+                                  layer.close(index1);
+                                  //xadmin.father_reload();
+                                  table.reload('table');
+                              });
+                          },
+                      });
+
+                  });
+              } else if(obj.event === 'edit'){
+                  xadmin.open('编辑用户信息','/user/edit/?id='+data.id);
+              }
+          });
+
           });
         </script>
     </body>
