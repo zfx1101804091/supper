@@ -1,6 +1,5 @@
 package com.zfx.supper.mapper;
 
-import com.zfx.supper.dto.UserDto;
 import com.zfx.supper.model.SysUser;
 import org.apache.ibatis.annotations.*;
 
@@ -39,5 +38,30 @@ public interface UserMapper {
     SysUser getUserById(Long id);
 
     
-    int updateUser(UserDto userDto);
+    int updateUser(SysUser sysUser);
+    
+    @Delete("delete from sys_user where id = #{intValue}")
+    int deleteUser(int intValue);
+
+    /*
+     * 功能描述: 模糊查询数据总数
+     * 
+     * @Param: [username]
+     * @Return: java.lang.Long
+     * @Author: Administrator
+     * @Date: 2019/11/20 0020 23:11
+     */
+    @Select("select count(*) from sys_user t where t.username like '%${username}%'")
+    Long findUserByFuzzyUserName(@Param("username") String username);
+
+    /*
+     * 功能描述: 模糊查询
+     * 
+     * @Param: [offset, limit, username]
+     * @Return: java.util.List<com.zfx.supper.model.SysUser>
+     * @Author: Administrator
+     * @Date: 2019/11/20 0020 23:12
+     */
+    @Select("select * from sys_user where username like '%${username}%'  limit #{startPosition}, #{limit}")
+    List<SysUser> findUserByFuzzyUserNameByPage(@Param("startPosition") Integer offset, @Param("limit")Integer limit, @Param("username")String username);
 }

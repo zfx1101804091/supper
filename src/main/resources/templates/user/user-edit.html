@@ -58,7 +58,7 @@
             <div class="layui-form-item">
                 <label for="L_email" class="layui-form-label">生日</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_birthday"  th:value="${sysUser.birthday}" name='birthday' placeholder="yyyy-MM-dd" class="layui-input ">
+                    <input type="text" id="L_birthday"  th:value="${#dates.format(sysUser.birthday,'yyyy-MM-dd')}" name='birthday' placeholder="yyyy-MM-dd" class="layui-input ">
                 </div>
             </div>
             <div class="layui-form-item">

@@ -81,4 +81,17 @@ public class UserserviceImpl implements Userservice {
             return Results.failure();
         }
     }
+
+    @Override
+    public int deleteUser(Long id) {
+        
+        roleUserMapper.deleteRoleUserByUserId(id.intValue());
+        return userMapper.deleteUser(id.intValue());
+    }
+
+    @Override
+    public Results<SysUser> findUserByFuzzyUserName(Integer offset, Integer limit, String username) {
+        return Results.success(userMapper.findUserByFuzzyUserName(username).intValue(),userMapper.findUserByFuzzyUserNameByPage(offset,limit,username));
+    }
+
 }

@@ -117,5 +117,28 @@ public class UserController {
         }
         return userservice.updateUser(userDto,roleId);
     }
+
+    @GetMapping(value = "/delete")
+    @ResponseBody
+    public Results<SysUser> deleteUser( UserDto userDto) {
+        int count = userservice.deleteUser(userDto.getId());
+        if(count>0){
+            return Results.success();
+        }
+        return Results.failure();
+    }
+
+
+
+    @GetMapping("/findUserByFuzzyUserName")
+    @ResponseBody
+    public Results<SysUser> findUserByFuzzyUserName(PageTableRequest pageTable,String username){
+        
+        log.debug("UserController.findUserByFuzzyUserName(): param (pageTable = {}---username = {}) ",pageTable,username);
+
+        pageTable.countOffset();
+
+        return userservice.findUserByFuzzyUserName(pageTable.getOffset(),pageTable.getLimit(),username);
+    }
     
 }

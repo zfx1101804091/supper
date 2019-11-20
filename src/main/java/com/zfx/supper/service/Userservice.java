@@ -33,4 +33,13 @@ public interface Userservice {
     SysUser getUserById(Long id);
 
     Results<SysUser> updateUser(UserDto userDto, Integer roleId);
+
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    int deleteUser(Long id);
+
+    Results<SysUser> findUserByFuzzyUserName(Integer offset, Integer limit, String username);
 }

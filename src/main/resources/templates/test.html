@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>这是个测试页面</title>
+    <script type="text/javascript">
+        /*下面的例子将更改一个链接的文本、URL 以及 target：*/
+        function changeLink()
+        {
+            document.getElementById('myAnchor').innerHTML="W3School";
+            document.getElementById('myAnchor').href="http://www.w3school.com.cn";
+            document.getElementById('myAnchor').target="_blank";
+        }
+    </script>
 </head>
+
 <body>
-    <h2>大家好，我叫张三</h2>
-    <table>
-        <tr>
-            <td>姓名</td>
-            <td>年龄</td>
-            <td>性别</td>
-        </tr>
-        <tr>
-            <td th:text="${name}"></td>
-            <td th:text="${age}"></td>
-            <td th:text="${sex}"></td>
-        </tr>
-    </table>
+<a id="myAnchor" href="http://www.microsoft.com">Microsoft</a>
+<input type="button" onclick="changeLink()" value="Change link">
 </body>
+
 </html>

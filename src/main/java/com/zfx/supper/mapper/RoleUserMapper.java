@@ -1,6 +1,7 @@
 package com.zfx.supper.mapper;
 
 import com.zfx.supper.model.SysRoleUser;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -15,4 +16,7 @@ public interface RoleUserMapper {
     SysRoleUser getSysRoleUserByUserId(Integer userId);
 
     int updateSysRoleUser(SysRoleUser sysRoleUser);
+
+    @Delete("delete from sys_role_user where userId = #{intValue}")
+    int deleteRoleUserByUserId(int intValue);
 }
