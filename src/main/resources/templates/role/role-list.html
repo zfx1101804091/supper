@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>角色列表</title>
+        <header th:replace="header::html"></header>
+    </head>
+    <body>
+        <div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">角色</a>
+            <a>
+              <cite>角色列表</cite></a>
+          </span>
+          <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <!--<div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+                                </div>-->
+                                <div class="layui-inline layui-show-xs-block">
+                                    <input type="text" name="rolename"  placeholder="请输入角色名" autocomplete="off" class="layui-input">
+                                </div>
+                                <div class="layui-inline layui-show-xs-block">
+                                    <button class="layui-btn"  lay-submit="" lay-filter="search"><i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-header">
+                            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+                            <button class="layui-btn" onclick="xadmin.open('新增角色','/role/add',600,400)"><i class="layui-icon"></i>新增</button>
+                        </div>
+                        <!--用户列表-->
+                        <div class="layui-card-body ">
+                            <table class="layui-hide" id="table" lay-filter="member"></table>
+                        </div>
+
+                        <div class="layui-card-body ">
+                            <!--头部工具栏-->
+                            <script type="text/html" id="barDemo">
+                                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            //加载模块：table，laddate,form,如果只加载一个模块，可以不填数组
+            layui.use('table', function () {
+                var table = layui.table;
+
+                //第一个实例
+                table.render({
+                    elem: '#table'
+                    //,height: 312
+                    , url: '/role/list' //数据接口
+                    //,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                    //如果你想重新规定返回的数据格式，那么可以借助 response 参数Results里的是datas
+                    // public static <T> Results<T> success(Integer count, List<T> datas)
+                    , response: {
+                        countName: 'count',//规定数据总数的字段名称，默认：data
+                        dataName: 'datas' //规定数据列表的字段名称，默认：data
+                    }
+                    , page: true //开启分页
+                    , cols: [
+                        [ //表头
+                            {type: 'checkbox', fixed: 'left'}
+                            , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                            , {field: 'name', title: '角色名'}
+                            , {field: 'description', title: '描述'}
+                            , {field: 'updateTime', title: '最后操作时间', sort: true}
+                            , {fixed: 'right', title: '操作', toolbar: '#barDemo',width:150}
+                        ]
+                    ]
+                });
+
+
+                //监听工具条
+                table.on('tool(member)', function (obj) {
+                    var data = obj.data;
+                    if (obj.event === 'del') {
+                        layer.confirm('真的删除行么', function (index) {
+
+                            $.ajax({
+                                url: "/role/delete",
+                                type: "GET",
+                                data: {id: data.id},
+                                dataType: 'json',
+                                success: function (result) {
+                                    layer.alert("删除成功", {icon: 1}, function (index1) {
+                                        layer.close(index1);
+                                        //xadmin.father_reload();//整个页面刷新
+                                        table.reload('table');//刷新这个table
+                                    });
+                                },
+                            });
+
+                        });
+                    } else if (obj.event === 'edit') {
+                        xadmin.open('编辑用户信息', '/role/edit/?id=' + data.id);
+                    }
+                });
+
+                //搜索
+                var form = layui.form;
+
+                form.on('submit(search)', function(data){
+                    var rolename = data.field.rolename;
+                    table.render({
+                        elem: '#table'
+                        //,height: 312
+                        , url: '/role/findRoleByFuzzyRoleName' //数据接口
+                        ,where:{
+                            "rolename":rolename
+                        }
+                        //,toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+                        //如果你想重新规定返回的数据格式，那么可以借助 response 参数Results里的是datas
+                        // public static <T> Results<T> success(Integer count, List<T> datas)
+                        , response: {
+                            countName: 'count',//规定数据总数的字段名称，默认：data
+                            dataName: 'datas' //规定数据列表的字段名称，默认：data
+                        }
+                        , page: true //开启分页
+                        , cols: [
+                            [ //表头
+                                {type: 'checkbox', fixed: 'left'}
+                                , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
+                                , {field: 'name', title: '角色名'}
+                                , {field: 'description', title: '描述'}
+                                , {field: 'updateTime', title: '最后操作时间', sort: true}
+                                , {fixed: 'right', title: '操作', toolbar: '#barDemo',width:150}
+                            ]
+                        ]
+                    });
+                    return false;
+                });
+            });
+        </script>
+    </body>
+</html>

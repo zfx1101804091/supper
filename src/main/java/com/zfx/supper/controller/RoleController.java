@@ -19,7 +19,7 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    @RequestMapping("/all")
+    @RequestMapping("/list")
     @ResponseBody
     public Results<SysRole> getAll(){
 
