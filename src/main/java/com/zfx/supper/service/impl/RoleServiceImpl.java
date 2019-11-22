@@ -15,9 +15,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
-    
+
+
     @Override
-    public Results<SysRole> getAllRoles() {
-        return Results.success(50,roleMapper.getAllRoles());
+    public Results<SysRole> getAllRoleByPage(Integer offset, Integer limit) {
+        
+        return Results.success(roleMapper.countAllRoles(),roleMapper.getAllRoleByPage(offset,limit));
+    }
+
+    @Override
+    public Results<SysRole> findRoleByFuzzyRoleName(Integer offset, Integer limit,String rolename) {
+
+        return Results.success(roleMapper.countAllRolesByName(rolename),roleMapper.findRoleByFuzzyRoleName(offset,limit,rolename));
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zfx.supper.mapper.RoleMapper">
+
+	<!--定义返回值类型 注意：dbcType="BIGINT" 加这个是为了返回数据中有id，不加返回数据无id-->
+	<resultMap id="RoleResultMap" type="com.zfx.supper.model.SysRole">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>
+		<result property="createTime" column="createTime"/>
+		<result property="updateTime" column="updateTime"/>
+	</resultMap>
+	
+	<!--定义sql片段-->
+	<sql id="role">
+		id,name,description,createTime,updateTime
+	</sql>
+	
+	<select id="getAllRoleByPage" parameterType="integer" resultMap="RoleResultMap" >
+		select 
+		<include refid="role"></include>
+		from sys_role 
+		limit #{offset},#{limit};
+	</select>
+
+
+	<select id="findRoleByFuzzyRoleName"  resultMap="RoleResultMap" >
+		select
+		<include refid="role"></include>
+		from sys_role
+		<where>
+			<if test="rolename!=null||rolename!=''"></if>
+			name like '%${rolename}%'
+		</where>
+		limit #{offset},#{limit};
+	</select>
+	
+	<select id="countAllRoles" resultType="java.lang.Integer">
+		select count(*) from sys_role;
+	</select>
+
+	<!--1.只有一个参数，无论参数名，都要改成"_parameter"；2.或者在接口上加@parme注解-->
+	<select id="countAllRolesByName" parameterType="string" resultType="java.lang.Integer">
+		select count(*) from sys_role where name like '%${_parameter}%';
+	</select>
+</mapper>

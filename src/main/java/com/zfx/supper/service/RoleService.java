@@ -6,5 +6,7 @@ import com.zfx.supper.model.SysRole;
 public interface RoleService {
 
 
-	Results<SysRole> getAllRoles();
+	Results<SysRole> getAllRoleByPage(Integer offset, Integer limit);
+	
+	Results<SysRole> findRoleByFuzzyRoleName(Integer offset, Integer limit,String rolename);
 }
