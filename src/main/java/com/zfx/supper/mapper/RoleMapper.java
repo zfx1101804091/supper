@@ -51,6 +51,7 @@ public interface RoleMapper {
      */
     Integer countAllRolesByName(String rolename);
 
-   
-    
+
+    @Select("select * from sys_role")
+    List<SysRole> getAllRole();
 }

@@ -8,8 +8,12 @@ import com.zfx.supper.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("role")
@@ -18,6 +22,13 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+    
+    @GetMapping("all")
+    @ResponseBody
+    public Results<SysRole> all(){
+        
+        return roleService.getAllRole();
+    }
 
     /*
      * 功能描述: 角色查询+分页排序
@@ -29,32 +40,35 @@ public class RoleController {
      */
     @RequestMapping("/list")
     @ResponseBody
-    public String list(PageTableRequest pageTable) {
+    public Results<SysRole> list(PageTableRequest pageTable) {
 
         pageTable.countOffset();
 
         Results<SysRole> rolelist = roleService.getAllRoleByPage(pageTable.getOffset(), pageTable.getLimit());
 
-        String jsonString = JSON.toJSONString(rolelist);
-
-        log.debug("role列表---{}",jsonString);
+        log.debug("role列表---{}",JSON.toJSONString(rolelist));
         
-        return jsonString;
+        return rolelist;
     }
 
     @RequestMapping("/findRoleByFuzzyRoleName")
     @ResponseBody
-    public String findRoleByFuzzyRoleName(PageTableRequest pageTable,String rolename) {
+    public Results<SysRole> findRoleByFuzzyRoleName(PageTableRequest pageTable,String rolename) {
 
         pageTable.countOffset();
 
         Results<SysRole> rolelist = roleService.findRoleByFuzzyRoleName(pageTable.getOffset(), pageTable.getLimit(),rolename);
 
-        String jsonString = JSON.toJSONString(rolelist);
+        log.debug("rolename: {} >>>>> role列表---{}",rolename,JSON.toJSONString(rolelist));
 
-        log.debug("rolename: {} >>>>> role列表---{}",rolename,jsonString);
-
-        return jsonString;
+        return rolelist;
     }
 
+    @GetMapping(value = "/add")
+    public String addRole(Model model) {
+        model.addAttribute("sysRole",new SysRole());
+        return "role/role-add";
+    }
+    
+    
 }

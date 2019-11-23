@@ -52,6 +52,7 @@
                                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
                             </script>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -61,8 +62,9 @@
         <script>
             //加载模块：table，laddate,form,如果只加载一个模块，可以不填数组
             layui.use('table', function () {
+                
                 var table = layui.table;
-
+                
                 //第一个实例
                 table.render({
                     elem: '#table'
@@ -84,7 +86,7 @@
                             , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
                             , {field: 'name', title: '角色名'}
                             , {field: 'description', title: '描述'}
-                            , {field: 'updateTime', title: '最后操作时间', sort: true}
+                            , {field: 'updateTime', title: '最后操作时间'}
                             , {fixed: 'right', title: '操作', toolbar: '#barDemo',width:150}
                         ]
                     ]

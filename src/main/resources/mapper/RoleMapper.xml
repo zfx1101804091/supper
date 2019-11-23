@@ -18,7 +18,7 @@
 	
 	<select id="getAllRoleByPage" parameterType="integer" resultMap="RoleResultMap" >
 		select 
-		<include refid="role"></include>
+		<include refid="role"/>
 		from sys_role 
 		limit #{offset},#{limit};
 	</select>
@@ -26,11 +26,12 @@
 
 	<select id="findRoleByFuzzyRoleName"  resultMap="RoleResultMap" >
 		select
-		<include refid="role"></include>
+		<include refid="role"/>
 		from sys_role
 		<where>
-			<if test="rolename!=null||rolename!=''"></if>
-			name like '%${rolename}%'
+			<if test="rolename!=null||rolename!=''">
+				name like '%${rolename}%'
+			</if>
 		</where>
 		limit #{offset},#{limit};
 	</select>
