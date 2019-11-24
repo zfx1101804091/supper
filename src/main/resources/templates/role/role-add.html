@@ -68,13 +68,13 @@
         //监听提交
         form.on('submit(add)', function(data){
             console.log(data);
-            var permissionIds = getCheckedMenuIds();
+            var permissionIds = getCheckedMenuIds();//将树中选中的权限进行赋值
             data.field.permissionIds = permissionIds;
             $.ajax({
                 url:"/role/add",
                 type:"POST",
                 contentType: "application/json; charset=utf-8",
-                data:JSON.stringify(data.field),
+                data:JSON.stringify(data.field),//转化成json
                 dataType:'json',
                 success:function(result){
                     layer.alert("添加成功", {icon: 6},function () {
@@ -88,6 +88,7 @@
             return false;
         });
     });
+    
     $.fn.zTree.init($("#treeDemo"), getSettting(), getMenuTree());
 
 </script>

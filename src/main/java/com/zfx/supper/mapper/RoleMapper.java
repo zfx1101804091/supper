@@ -1,6 +1,7 @@
 package com.zfx.supper.mapper;
 
 import com.zfx.supper.base.result.Results;
+import com.zfx.supper.dto.RoleDto;
 import com.zfx.supper.model.SysRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -54,4 +55,11 @@ public interface RoleMapper {
 
     @Select("select * from sys_role")
     List<SysRole> getAllRole();
+
+    int saveRole(SysRole sysRole);
+
+    int update(RoleDto roleDto);
+    
+    @Select("select * from sys_role t where t.id = #{id}")
+    SysRole getById(Integer id);
 }

@@ -12,6 +12,7 @@ package com.zfx.supper.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLOutput;
 
 /**
  * MD5加密
@@ -46,4 +47,8 @@ public class MD5 {
 		return hexString.toString();
 	}
 
+	public static void main(String[] args) {
+		String crypt = MD5.crypt("1");
+		System.out.println(crypt);
+	}
 }

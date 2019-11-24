@@ -3,15 +3,14 @@ package com.zfx.supper.controller;
 import com.alibaba.fastjson.JSON;
 import com.zfx.supper.base.result.PageTableRequest;
 import com.zfx.supper.base.result.Results;
+import com.zfx.supper.dto.RoleDto;
 import com.zfx.supper.model.SysRole;
 import com.zfx.supper.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -70,5 +69,24 @@ public class RoleController {
         return "role/role-add";
     }
     
-    
+    @PostMapping(value = "/add")
+    @ResponseBody
+    public Results saveRole(@RequestBody RoleDto roleDto) {
+        
+        return roleService.saveRole(roleDto);
+    }
+
+
+    @GetMapping(value = "/edit")
+    public String editRole(Model model,SysRole sysRole) {
+        model.addAttribute("sysRole",roleService.getRoleById(sysRole.getId()));
+        return "role/role-edit";
+    }
+
+    @PostMapping(value = "/edit")
+    @ResponseBody
+    public Results updateRole(@RequestBody RoleDto roleDto) {
+        int a = roleService.updateRole(roleDto);
+        return Results.success();
+    }
 }

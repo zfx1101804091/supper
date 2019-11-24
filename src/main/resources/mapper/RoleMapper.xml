@@ -15,8 +15,9 @@
 	<sql id="role">
 		id,name,description,createTime,updateTime
 	</sql>
-	
-	<select id="getAllRoleByPage" parameterType="integer" resultMap="RoleResultMap" >
+   
+
+    <select id="getAllRoleByPage" parameterType="integer" resultMap="RoleResultMap" >
 		select 
 		<include refid="role"/>
 		from sys_role 
@@ -44,4 +45,26 @@
 	<select id="countAllRolesByName" parameterType="string" resultType="java.lang.Integer">
 		select count(*) from sys_role where name like '%${_parameter}%';
 	</select>
+
+
+	<insert id="saveRole" parameterType="com.zfx.supper.model.SysRole" flushCache="true" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role(name, description, createTime, updateTime) 
+		values
+		(#{name},#{description},now(),now()); 
+	</insert>
+
+	<update id="update">
+		update sys_role t
+		<set>
+			<if test="name != null">
+				`name` = #{name},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+
+			updateTime = #{updateTime}
+		</set>
+		where t.id = #{id}
+	</update>
 </mapper>
