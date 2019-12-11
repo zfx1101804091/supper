@@ -89,4 +89,11 @@ public class RoleController {
         int a = roleService.updateRole(roleDto);
         return Results.success();
     }
+
+
+    @GetMapping(value = "/delete")
+    @ResponseBody
+    public Results<SysRole> deleteRole(RoleDto roleDto) {
+        return roleService.delete(roleDto.getId());
+    }
 }

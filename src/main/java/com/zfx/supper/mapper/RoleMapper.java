@@ -1,8 +1,8 @@
 package com.zfx.supper.mapper;
 
-import com.zfx.supper.base.result.Results;
 import com.zfx.supper.dto.RoleDto;
 import com.zfx.supper.model.SysRole;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -62,4 +62,7 @@ public interface RoleMapper {
     
     @Select("select * from sys_role t where t.id = #{id}")
     SysRole getById(Integer id);
+    
+    @Delete("delete from sys_role where id = #{id}")
+    void delete(Integer id);
 }

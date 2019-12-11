@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface RoleUserMapper {
 
@@ -19,4 +21,7 @@ public interface RoleUserMapper {
 
     @Delete("delete from sys_role_user where userId = #{intValue}")
     int deleteRoleUserByUserId(int intValue);
+
+    @Select("select * from sys_role_user t where t.roleId = #{id}")
+    List<SysRoleUser> listAllSysRoleUserByRoleId(Integer id);
 }

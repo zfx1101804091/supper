@@ -20,4 +20,6 @@ public interface RoleService {
 	int updateRole(RoleDto roleDto);
 
 	SysRole getRoleById(Integer id);
+
+	Results<SysRole> delete(Integer id);
 }

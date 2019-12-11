@@ -38,7 +38,7 @@
                         </div>
                         <div class="layui-card-header">
                             <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                            <button class="layui-btn" onclick="xadmin.open('新增角色','/role/add',600,400)"><i class="layui-icon"></i>新增</button>
+                            <button class="layui-btn" onclick="xadmin.open('新增角色','/role/add')"><i class="layui-icon"></i>新增</button>
                         </div>
                         <!--用户列表-->
                         <div class="layui-card-body ">
@@ -96,6 +96,7 @@
                 //监听工具条
                 table.on('tool(member)', function (obj) {
                     var data = obj.data;
+                    console.log(obj.data);
                     if (obj.event === 'del') {
                         layer.confirm('真的删除行么', function (index) {
 
@@ -104,12 +105,18 @@
                                 type: "GET",
                                 data: {id: data.id},
                                 dataType: 'json',
-                                success: function (result) {
-                                    layer.alert("删除成功", {icon: 1}, function (index1) {
-                                        layer.close(index1);
-                                        //xadmin.father_reload();//整个页面刷新
-                                        table.reload('table');//刷新这个table
-                                    });
+                                success:function(result){
+                                    console.log('result---'+result);
+                                    if(result.code == 200){
+                                        layer.alert("删除成功", {icon: 1},function (index1) {
+                                            layer.close(index1);
+                                            //xadmin.father_reload();
+                                            table.reload('table');
+                                        });
+                                    }else{
+                                        layer.alert(result.msg);
+                                    }
+
                                 },
                             });
 
