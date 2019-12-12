@@ -8,9 +8,7 @@ import com.zfx.supper.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("permission")
@@ -40,6 +38,18 @@ public class PermissionController {
     public Results<SysPermission> listAllPermissionByRoleId(RoleDto roleDto) {
         log.info(getClass().getName() + " : param =  " + roleDto);
         return permissionService.listByRoleId(roleDto.getId().intValue());
+    }
+
+    @GetMapping("/menuAll")
+    @ResponseBody
+    public Results getMenuAll(){
+        return permissionService.getMenuAll();
+    }
+
+    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    @ResponseBody
+    public Results<SysPermission> getMenu(Long userId) {
+        return permissionService.getMenu(userId);
     }
 
 }
