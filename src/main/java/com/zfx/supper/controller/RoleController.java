@@ -94,6 +94,7 @@ public class RoleController {
     @GetMapping(value = "/delete")
     @ResponseBody
     public Results<SysRole> deleteRole(RoleDto roleDto) {
+        log.debug("要删除的角色id--{}",roleDto.getId());
         return roleService.delete(roleDto.getId());
     }
 }
