@@ -98,6 +98,12 @@
 			<version>1.2.3</version>
 		</dependency>-->
 		<!--slfj和logback整合 结束-->
+
+		<!--导入spring security启动器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

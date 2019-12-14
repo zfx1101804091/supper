@@ -47,6 +47,14 @@ public class PermissionController {
         return permissionService.getMenuAll();
     }
 
+    /*
+     * 功能描述: 动态菜单
+     * 
+     * @Param: [userId]
+     * @Return: com.zfx.supper.base.result.Results<com.zfx.supper.model.SysPermission>
+     * @Author: Administrator
+     * @Date: 2019/12/14 0014 23:26
+     */
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     @ResponseBody
     public Results<SysPermission> getMenu(Long userId) {

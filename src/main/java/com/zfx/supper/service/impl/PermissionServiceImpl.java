@@ -51,6 +51,7 @@ public class PermissionServiceImpl implements PermissionService {
     @Override
     public Results getMenu(Long userId) {
         List<SysPermission> datas = permissionMapper.listByUserId(userId);
+        //使用jdk8的stream流过滤掉SysPermission中的按钮，只保留菜单重新赋值
         datas = datas.stream().filter(p -> p.getType().equals(1)).collect(Collectors.toList());
         JSONArray array = new JSONArray();
         log.info(getClass().getName() + ".setPermissionsTree(?,?,?)");
