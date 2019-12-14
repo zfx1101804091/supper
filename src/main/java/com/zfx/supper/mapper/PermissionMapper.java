@@ -1,9 +1,7 @@
 package com.zfx.supper.mapper;
 
 import com.zfx.supper.model.SysPermission;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -24,4 +22,25 @@ public interface PermissionMapper {
             "WHERE " +
             "sru.userId = #{userId}")
     List<SysPermission> listByUserId(@Param("userId") Long userId);
+
+    //Options --返回自主增鍵
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Insert("insert into sys_permission(parentId, name, css, href, type, permission, sort) values(#{parentId}, #{name}, #{css}, #{href}, #{type}, #{permission}, #{sort})")
+    int save(SysPermission e);
+    
+    @Select("select * from sys_permission t where t.id = #{id}")
+    SysPermission getSysPermissionById(Integer id);
+
+    int update(SysPermission e);
+
+    @Delete("delete from sys_permission where id = #{id}")
+    int deleteById(Integer id);
+
+    /**
+     * 采用级联的方式删除（在mysql数据库设置外键级联）
+     * @param parentId
+     * @return
+     */
+    @Delete("delete from sys_permission where parentId = #{parentId}")
+    int deleteByParentId(Integer parentId);
 }

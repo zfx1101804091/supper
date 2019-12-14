@@ -58,4 +58,27 @@ public class PermissionServiceImpl implements PermissionService {
         return Results.success(array);
     }
 
+    @Override
+    public Results save(SysPermission sysPermission) {
+        return (permissionMapper.save(sysPermission) > 0) ? Results.success() : Results.failure();
+    }
+
+    @Override
+    public SysPermission getSysPermissionById(Integer id) {
+        return permissionMapper.getSysPermissionById(id);
+    }
+
+    @Override
+    public Results updateSysPermission(SysPermission sysPermission) {
+        return (permissionMapper.update(sysPermission) > 0) ? Results.success() : Results.failure();
+    }
+
+    @Override
+    public Results delete(Integer id) {
+        permissionMapper.deleteById(id);
+        permissionMapper.deleteByParentId(id);
+        return Results.success();
+    }
+
+
 }

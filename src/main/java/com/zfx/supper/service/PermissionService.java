@@ -14,4 +14,12 @@ public interface PermissionService {
     Results<SysPermission> getMenuAll();
 
     Results<SysPermission> getMenu(Long userId);
+
+    Results<SysPermission> save(SysPermission sysPermission);
+
+    SysPermission getSysPermissionById(Integer id);
+
+    Results updateSysPermission(SysPermission sysPermission);
+
+    Results delete(Integer id);
 }
