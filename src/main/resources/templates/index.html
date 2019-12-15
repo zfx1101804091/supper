@@ -94,8 +94,9 @@
 
 <script>
     $(document).ready(function () { //初始化加载
-        //显示用户名
+        //获取并显示用户名
         var nickName = localStorage.nickName;
+        //给标签赋值
         $("#show-nickName").text((nickName != null && nickName != undefined) ? nickName : "---");
 
         //抽出静态菜单元素编写菜单模板
@@ -219,8 +220,8 @@
 
         }
         var userId = localStorage.userId;
-        // var menu = new Menu("",userId );
-        var menu = new Menu("",1 );
+         var menu = new Menu("",userId );
+        //var menu = new Menu("",1 );
         menu.init();
     })
     ;

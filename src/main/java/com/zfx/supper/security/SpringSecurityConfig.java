@@ -2,6 +2,7 @@ package com.zfx.supper.security;
 
 import com.zfx.supper.security.authentication.MyAuthenctiationFailureHandler;
 import com.zfx.supper.security.authentication.MyAuthenticationSuccessHandler;
+import com.zfx.supper.security.authentication.MyLogoutSuccessHandler;
 import com.zfx.supper.security.authentication.RestAuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +36,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
     private RestAuthenticationAccessDeniedHandler restAuthenticationAccessDeniedHandler;
+    
+    @Autowired
+    private MyLogoutSuccessHandler myLogoutSuccessHandler;
     
     /*
         加密密码
@@ -91,6 +95,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")//请求的地址
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenctiationFailureHandler)
+            .and().logout()//登出
+                .permitAll()
+                .invalidateHttpSession(true)//设置session失效
+                .deleteCookies("JESSIONID")
+                .logoutSuccessHandler(myLogoutSuccessHandler)
+                
         ;
         //异常处理
         http.exceptionHandling().accessDeniedHandler(restAuthenticationAccessDeniedHandler);
