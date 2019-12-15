@@ -10,6 +10,7 @@ import com.zfx.supper.util.MD5;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -83,7 +84,10 @@ public class UserController {
         }
         
         userDto.setStatus(1);
-        userDto.setPassword(MD5.crypt(userDto.getPassword()));
+        //userDto.setPassword(MD5.crypt(userDto.getPassword()));
+        
+        //修改密码的加密方式为spring security的方式
+        userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
 
         Results<SysUser> results = userservice.save(userDto, roleId);
         return results;
