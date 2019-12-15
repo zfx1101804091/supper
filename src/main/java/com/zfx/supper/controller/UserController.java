@@ -10,6 +10,7 @@ import com.zfx.supper.util.MD5;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +51,7 @@ public class UserController {
 
     @RequestMapping("/list")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:query')")
     public Results<SysUser> list(PageTableRequest pageTable){
 
         pageTable.countOffset();
@@ -66,6 +68,7 @@ public class UserController {
      * @Date: 2019/11/17 0017 23:03
      */
     @RequestMapping("/add")
+    @PreAuthorize("hasAnyAuthority('sys:user:add')")
     public String addUser(Model model){
         //初始化SysUser，防止前端thymeleaf取值时报异常 th:value="${sysUser.sex}"
         model.addAttribute(new SysUser());
@@ -74,6 +77,7 @@ public class UserController {
 
     @PostMapping("/add")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:add')")
     public Results<SysUser> saveUser(UserDto userDto, Integer roleId){
         
         SysUser sysUser = null;
@@ -103,6 +107,7 @@ public class UserController {
     }
 
     @GetMapping("/edit")
+    //@PreAuthorize("hasAuthority('sys:user:edit')")
     public String editUser(Model model,SysUser sysUser){
         
         model.addAttribute(userservice.getUserById(sysUser.getId()));
@@ -111,6 +116,7 @@ public class UserController {
 
     @PostMapping("/edit")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     public Results<SysUser> updateUser(UserDto userDto,Integer roleId){
 
         SysUser sysUser = null;
@@ -124,6 +130,7 @@ public class UserController {
 
     @GetMapping(value = "/delete")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:del')")
     public Results<SysUser> deleteUser( UserDto userDto) {
         int count = userservice.deleteUser(userDto.getId());
         if(count>0){
@@ -136,6 +143,7 @@ public class UserController {
 
     @GetMapping("/findUserByFuzzyUserName")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:user:query')")
     public Results<SysUser> findUserByFuzzyUserName(PageTableRequest pageTable,String username){
         
         log.debug("UserController.findUserByFuzzyUserName(): param (pageTable = {}---username = {}) ",pageTable,username);

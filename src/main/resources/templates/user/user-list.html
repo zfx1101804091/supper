@@ -42,8 +42,8 @@
                 <div class="layui-card-header">
                     <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="xadmin.open('添加用户','/user/add',750,550)"><i
-                            class="layui-icon"></i>添加
+                    <!--<button class="layui-btn" onclick="xadmin.open('添加用户','/user/add',750,550)"><i class="layui-icon"></i>添加-->
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','/user/add')" permission="sys:user:add"><i class="layui-icon"></i>添加
                     </button>
                 </div>
                 <!--用户列表-->
@@ -107,7 +107,10 @@
                     , {field: 'birthday', title: '生日'}
                     , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                 ]
-            ]
+            ],
+            done:function () {
+                checkPermission();
+            }
         });
 
 
@@ -174,10 +177,11 @@
                         , {field: 'birthday', title: '生日'}
                         , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
                     ]
-                ]
+                ],
             });
             return false;
         });
+        checkPermission()
     });
 </script>
 </body>

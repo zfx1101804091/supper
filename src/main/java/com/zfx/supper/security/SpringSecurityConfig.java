@@ -2,6 +2,7 @@ package com.zfx.supper.security;
 
 import com.zfx.supper.security.authentication.MyAuthenctiationFailureHandler;
 import com.zfx.supper.security.authentication.MyAuthenticationSuccessHandler;
+import com.zfx.supper.security.authentication.RestAuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.management.relation.RelationServiceNotRegisteredException;
 
 /**
  * @description: 自定义登陆成功处理
@@ -29,6 +32,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Autowired
     private MyAuthenctiationFailureHandler myAuthenctiationFailureHandler;
+    
+    @Autowired
+    private RestAuthenticationAccessDeniedHandler restAuthenticationAccessDeniedHandler;
     
     /*
         加密密码
@@ -57,6 +63,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         
         //CSRF跨站点请求伪造(Cross—Site Request Forgery)
         http.csrf().disable();
+        //解决页面Refused to display '<URL>' in a frame because it set 'X-Frame-Options' to 'deny'.
+        http.headers().frameOptions().sameOrigin();
         /*
         http.authorizeRequests().anyRequest().authenticated();//意思是任何http请求都需要验证
         下面这段意思是这些路径下的资源是允许访问的，不去拦截
@@ -84,7 +92,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenctiationFailureHandler)
         ;
-                
+        //异常处理
+        http.exceptionHandling().accessDeniedHandler(restAuthenticationAccessDeniedHandler);
     }
 }
 

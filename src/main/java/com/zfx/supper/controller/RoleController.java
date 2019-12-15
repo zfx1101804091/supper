@@ -8,6 +8,7 @@ import com.zfx.supper.model.SysRole;
 import com.zfx.supper.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +40,7 @@ public class RoleController {
      */
     @RequestMapping("/list")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:query')")
     public Results<SysRole> list(PageTableRequest pageTable) {
 
         pageTable.countOffset();
@@ -52,6 +54,7 @@ public class RoleController {
 
     @RequestMapping("/findRoleByFuzzyRoleName")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:query')")
     public Results<SysRole> findRoleByFuzzyRoleName(PageTableRequest pageTable,String rolename) {
 
         pageTable.countOffset();
@@ -64,6 +67,7 @@ public class RoleController {
     }
 
     @GetMapping(value = "/add")
+    @PreAuthorize("hasAuthority('sys:role:add')")
     public String addRole(Model model) {
         model.addAttribute("sysRole",new SysRole());
         return "role/role-add";
@@ -71,6 +75,7 @@ public class RoleController {
     
     @PostMapping(value = "/add")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:add')")
     public Results saveRole(@RequestBody RoleDto roleDto) {
         
         return roleService.saveRole(roleDto);
@@ -85,6 +90,7 @@ public class RoleController {
 
     @PostMapping(value = "/edit")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     public Results updateRole(@RequestBody RoleDto roleDto) {
         int a = roleService.updateRole(roleDto);
         return Results.success();
@@ -93,6 +99,7 @@ public class RoleController {
 
     @GetMapping(value = "/delete")
     @ResponseBody
+    @PreAuthorize("hasAuthority('sys:role:del')")
     public Results<SysRole> deleteRole(RoleDto roleDto) {
         log.debug("要删除的角色id--{}",roleDto.getId());
         return roleService.delete(roleDto.getId());
