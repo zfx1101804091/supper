@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-//@MapperScan("com.zfx.supper.mapper")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SupperApplication {
 
 	public static void main(String[] args) {
