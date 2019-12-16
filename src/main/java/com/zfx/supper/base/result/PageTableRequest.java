@@ -16,7 +16,7 @@ public class PageTableRequest implements Serializable {
     private Integer limit;
     private Integer offset;
     
-    
+    //这里使用的是mysql的limit排序，limit5,10  ---检索6-15
     public void countOffset(){
         if(null==this.page||null==this.limit){
             this.offset=0;

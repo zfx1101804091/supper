@@ -13,6 +13,7 @@ public interface UserMapper {
     
     /**
      * 功能描述: 查询分页数据
+     *  select * from sys_user limit 5, 10 ; 检索记录行 6-15
      */
     @Select("select * from sys_user order by id  limit #{startPosition},#{limit}")
     List<SysUser> getAllUsersByPage(@Param("startPosition") Integer startPosition, @Param("limit") Integer limit);

@@ -7,6 +7,9 @@ import com.zfx.supper.dto.UserDto;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
 import com.zfx.supper.util.MD5;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -52,6 +55,8 @@ public class UserController {
     @RequestMapping("/list")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:query')")
+    @ApiOperation(value = "分页获取用户信息",notes = "分页获取用户信息")//描述
+    @ApiImplicitParam(name = "pageTable",value = "分页查询实体类",required = false)//一个请求参数
     public Results<SysUser> list(PageTableRequest pageTable){
 
         pageTable.countOffset();
@@ -69,6 +74,7 @@ public class UserController {
      */
     @RequestMapping("/add")
     @PreAuthorize("hasAnyAuthority('sys:user:add')")
+    @ApiOperation(value = "用户新增页面", notes = "跳转到新增用户信息页面")//描述
     public String addUser(Model model){
         //初始化SysUser，防止前端thymeleaf取值时报异常 th:value="${sysUser.sex}"
         model.addAttribute(new SysUser());
@@ -78,6 +84,7 @@ public class UserController {
     @PostMapping("/add")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:add')")
+    @ApiOperation(value = "保存用户信息", notes = "保存新增的用户信息")//描述
     public Results<SysUser> saveUser(UserDto userDto, Integer roleId){
         
         SysUser sysUser = null;
@@ -108,6 +115,8 @@ public class UserController {
 
     @GetMapping("/edit")
     //@PreAuthorize("hasAuthority('sys:user:edit')")
+    @ApiOperation(value = "用户编辑页面", notes = "跳转到用户信息编辑页面")//描述
+    @ApiImplicitParam(name = "sysUser", value = "用户实体类", dataType = "SysUser")
     public String editUser(Model model,SysUser sysUser){
         
         model.addAttribute(userservice.getUserById(sysUser.getId()));
@@ -117,6 +126,7 @@ public class UserController {
     @PostMapping("/edit")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:edit')")
+    @ApiOperation(value = "保存用户信息", notes = "保存编辑完的用户信息")//描述
     public Results<SysUser> updateUser(UserDto userDto,Integer roleId){
 
         SysUser sysUser = null;
@@ -131,6 +141,8 @@ public class UserController {
     @GetMapping(value = "/delete")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:del')")
+    @ApiOperation(value = "删除用户信息", notes = "删除用户信息")//描述
+    @ApiImplicitParam(name = "userDto", value = "用户实体类", required = true, dataType = "UserDto")
     public Results<SysUser> deleteUser( UserDto userDto) {
         int count = userservice.deleteUser(userDto.getId());
         if(count>0){
@@ -144,6 +156,11 @@ public class UserController {
     @GetMapping("/findUserByFuzzyUserName")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:query')")
+    @ApiOperation(value = "模糊查询用户信息", notes = "模糊搜索查询用户信息")//描述
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username",value = "模糊搜索的用户名", required = true),
+            //@ApiImplicitParam(name = "pageTable",value = "分页查询实体类", required = false)
+    })
     public Results<SysUser> findUserByFuzzyUserName(PageTableRequest pageTable,String username){
         
         log.debug("UserController.findUserByFuzzyUserName(): param (pageTable = {}---username = {}) ",pageTable,username);
