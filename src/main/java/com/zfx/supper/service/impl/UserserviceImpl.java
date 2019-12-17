@@ -8,6 +8,7 @@ import com.zfx.supper.model.SysRoleUser;
 import com.zfx.supper.model.SysUser;
 import com.zfx.supper.service.Userservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +93,26 @@ public class UserserviceImpl implements Userservice {
     @Override
     public Results<SysUser> findUserByFuzzyUserName(Integer offset, Integer limit, String username) {
         return Results.success(userMapper.findUserByFuzzyUserName(username).intValue(),userMapper.findUserByFuzzyUserNameByPage(offset,limit,username));
+    }
+
+    @Override
+    public Results<SysUser> changePassword(String username, String oldPassword, String newPassword) {
+        SysUser u = userMapper.getUser(username);
+        /*
+        密码匹配(matches)：用户登录时，密码匹配阶段并没有进行密码解密（因为密码经过Hash处理，是不可逆的），
+        而是使用相同的算法把用户输入的密码进行hash处理，得到密码的hash值，
+        然后将其与从数据库中查询到的密码hash值进行比较。如果两者相同，说明用户输入的密码正确。
+         */
+        boolean matches = new BCryptPasswordEncoder().matches(oldPassword, u.getPassword());
+        if (u == null) {
+            return Results.failure(1,"用户不存在");
+        }else if (!matches) {
+            System.out.println("u.getPassword()----"+u.getPassword());
+            return Results.failure(1,"旧密码错误,请重新修改");
+        }else {
+            userMapper.changePassword(u.getId(), new BCryptPasswordEncoder().encode(newPassword));
+            return Results.success();
+        }
     }
 
 }

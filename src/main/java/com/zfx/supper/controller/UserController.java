@@ -169,5 +169,13 @@ public class UserController {
 
         return userservice.findUserByFuzzyUserName(pageTable.getOffset(),pageTable.getLimit(),username);
     }
+
+
+    @PostMapping("/changePassword")
+    @ApiOperation(value = "修改密码")
+    @ResponseBody
+    public Results<SysUser> changePassword(String username, String oldPassword, String newPassword) {
+        return userservice.changePassword(username, oldPassword, newPassword);
+    }
     
 }

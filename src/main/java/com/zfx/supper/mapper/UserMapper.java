@@ -65,4 +65,10 @@ public interface UserMapper {
      */
     @Select("select * from sys_user where username like '%${username}%'  limit #{startPosition}, #{limit}")
     List<SysUser> findUserByFuzzyUserNameByPage(@Param("startPosition") Integer offset, @Param("limit")Integer limit, @Param("username")String username);
+
+    @Select("select * from sys_user t where t.username = #{username}")
+    SysUser getUser(String username);
+
+    @Update("update sys_user t set t.password = #{password} where t.id = #{id}")
+    int changePassword(@Param("id") Long id, @Param("password") String password);
 }
