@@ -97,8 +97,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(myAuthenctiationFailureHandler)
             .and().logout()//登出
                 .permitAll()
-                .invalidateHttpSession(true)//设置session失效
-                .deleteCookies("JESSIONID")
+                .invalidateHttpSession(true)//是否移除 HttpSession
+                .deleteCookies("JESSIONID")//删除指定的 cookies
                 .logoutSuccessHandler(myLogoutSuccessHandler)
                 
         ;
