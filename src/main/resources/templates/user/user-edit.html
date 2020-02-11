@@ -64,8 +64,9 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block">
-                    <input type="radio" th:value="${sysUser.sex}" name="sex" value="1" title="男" checked="">
-                    <input type="radio" th:value="${sysUser.sex}" name="sex" value="0" title="女">
+                    <input type="hidden" th:value="${sysUser.sex}" name="sex" id="s0"  title="" >
+                    <input type="radio" th:valuetype="${sysUser.sex}" name="sex" id="s1" value="1" title="男" >
+                    <input type="radio" th:valuetype="${sysUser.sex}" name="sex" id="s2" value="0" title="女" >
                 </div>
             </div>
             <input type="text" id="roleId"  name="roleId" style="display:none;"/>
@@ -91,6 +92,19 @@
         var form = layui.form
             ,layer = layui.layer
             ,laydate = layui.laydate;
+        //input中的radio回显
+        var checked = document.getElementById("s0");
+        alert("checked.value---"+checked.value)
+        if(checked.value=='1'){
+            $("#s1").attr({
+                checked: "checked"
+            });
+        }else{
+            $("#s2").attr({
+                checked: "checked"
+            });
+        }
+        
         //重新渲染表单属性
         getAllRole(function(){
             layui.form.render('radio')
