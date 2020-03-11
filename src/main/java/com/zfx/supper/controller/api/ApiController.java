@@ -19,6 +19,7 @@ public class ApiController {
      * @param pageName
      * @return
      */
+    //<iframe src='/api/getPage?pageName=user/user-list' /> 配合前端使用
     @RequestMapping("/getPage")
     public ModelAndView getPage(ModelAndView modelAndView,String pageName){
         modelAndView.setViewName(pageName);

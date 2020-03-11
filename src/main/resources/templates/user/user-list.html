@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>用户列表</title>
     <header th:replace="header::html"></header>
+
+    <script type="text/javascript" th:src="@{/my/js/excel_tool.js}"></script>
 </head>
 <body>
 
@@ -40,8 +42,12 @@
                     </form>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()" permission="sys:user:del"><i class="layui-icon"></i>批量删除
-                    </button>
+                    <button id="importData" class="layui-btn" onclick="importData()">导入</button>
+                    <button class="layui-btn" onclick="exportData();">导出</button>
+                    <button class="layui-btn" onclick="downloadTemplate();">模板下载</button>
+                    
+                    <!--<button class="layui-btn layui-btn-danger" onclick="exportExcel()" ><i class="layui-icon"></i>导出</button>-->
+                    
                     <!--<button class="layui-btn" onclick="xadmin.open('添加用户','/user/add',750,550)"><i class="layui-icon"></i>添加-->
                     <button class="layui-btn" onclick="xadmin.open('添加用户','/user/add')" permission="sys:user:add"><i class="layui-icon"></i>添加
                     </button>
@@ -95,7 +101,7 @@
                     {type: 'checkbox', fixed: 'left'}
                     , {field: 'id', title: 'ID', sort: true, fixed: 'left'}
                     , {field: 'username', title: '用户名'}
-                    , {field: 'nickname', title: '角色名'}
+                    , {field: 'nickname', title: '昵称'}
                     , {field: 'telephone', title: '手机号', sort: true}
                     , {
                     field: 'status', title: '状态', templet: function (d) {
@@ -156,7 +162,7 @@
                 //如果你想重新规定返回的数据格式，那么可以借助 response 参数Results里的是datas
                 // public static <T> Results<T> success(Integer count, List<T> datas)
                 , response: {
-                    countName: 'count',//规定数据总数的字段名称，默认：data
+                    countName: 'count',//规定数据总数的字段名称，默认：count
                     dataName: 'datas' //规定数据列表的字段名称，默认：data
                 }
                 , page: true //开启分页
@@ -181,6 +187,7 @@
             });
             return false;
         });
+        //控制权限按钮 编辑、删除、查询等得显示和隐藏
         checkPermission()
     });
 </script>

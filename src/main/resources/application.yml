@@ -35,6 +35,8 @@ spring:
     filters: stat,wall,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  thymeleaf:
+    cache: false
 
 mybatis:
   type-aliases-package: com.zfx.supper.model
@@ -52,9 +54,8 @@ api-url: /api
 #  jwtSecret: (XIAO:)_$^11244^%$_(WEI:)_@@++--(LAO:)_++++_.sds_(SHI:)
 
 server:
-  port: 8080
+  port: 8066
   
 log:
-  path: E:\logs
+  path: zfx\logs
 
-  

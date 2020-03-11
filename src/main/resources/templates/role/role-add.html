@@ -68,8 +68,8 @@
         //监听提交
         form.on('submit(add)', function(data){
             console.log(data);
-            var permissionIds = getCheckedMenuIds();//将树中选中的权限进行赋值
-            data.field.permissionIds = permissionIds;
+            var permissionIds = getCheckedMenuIds();//获取菜单树选中的id
+            data.field.permissionIds = permissionIds;//然后将获取的选中id加入到data.field里面
             $.ajax({
                 url:"/role/add",
                 type:"POST",
@@ -88,7 +88,7 @@
             return false;
         });
     });
-    
+    //初始化菜单树
     $.fn.zTree.init($("#treeDemo"), getSettting(), getMenuTree());
 
 </script>

@@ -1,5 +1,8 @@
 package com.zfx.supper.controller;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
 import com.zfx.supper.base.result.PageTableRequest;
 import com.zfx.supper.base.result.ResponseCode;
 import com.zfx.supper.base.result.Results;
@@ -22,7 +25,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description:
@@ -52,6 +57,10 @@ public class UserController {
         return user;
     }
 
+    /*
+    * @PreAuthorize("hasAuthority('sys:user:query')")
+    *       这个注解的意思就是授权，springsecurity会根据数据库的permission和此注解上的相比对，相同则为授权
+    * */
     @RequestMapping("/list")
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:user:query')")
@@ -114,7 +123,7 @@ public class UserController {
     }
 
     @GetMapping("/edit")
-    //@PreAuthorize("hasAuthority('sys:user:edit')")
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     @ApiOperation(value = "用户编辑页面", notes = "跳转到用户信息编辑页面")//描述
     @ApiImplicitParam(name = "sysUser", value = "用户实体类", dataType = "SysUser")
     public String editUser(Model model,SysUser sysUser){
@@ -177,5 +186,34 @@ public class UserController {
     public Results<SysUser> changePassword(String username, String oldPassword, String newPassword) {
         return userservice.changePassword(username, oldPassword, newPassword);
     }
-    
+
+
+    @PostMapping("/exportData")
+    @ApiOperation(value = "导出excel")
+    @ResponseBody
+    public Results exportData(PageTableRequest pageTable) {
+        
+        pageTable.countOffset();
+
+        Results<SysUser> allUserByPage = userservice.getAllUserByPage(pageTable.getOffset(), 1000);
+        List<SysUser> sysUsers = allUserByPage.getDatas();
+
+
+        System.out.println("sysUsers---"+sysUsers);
+        sysUsers.forEach((sysUser)->{
+            
+            List rows  = CollUtil.newArrayList(sysUser);
+            // 通过工具类创建writer
+            ExcelWriter writer = ExcelUtil.getWriter("d:/sysUser.xlsx");
+            // 合并单元格后的标题行，使用默认标题样式
+                       // writer.merge(4, "用户表");
+            // 一次性写出内容，使用默认样式，强制输出标题
+                        writer.write(rows, true);
+            // 关闭writer，释放内存
+            writer.close();
+        });
+        return Results.success();
+    }
+
+
 }

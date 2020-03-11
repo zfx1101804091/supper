@@ -33,6 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //根据用户名查询用户信息
         SysUser sysUser = userservice.getUserByName(username);
         if (sysUser == null) {
             throw new AuthenticationCredentialsNotFoundException("用户名不存在");
@@ -45,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(sysUser, loginUser);
 
+        //查出用户角色权限，并赋值给用户
         List<SysPermission> permissions = permissionMapper.listByUserId(sysUser.getId());
         loginUser.setPermissions(permissions);
 

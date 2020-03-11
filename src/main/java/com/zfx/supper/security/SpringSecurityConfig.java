@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +22,8 @@ import javax.management.relation.RelationServiceNotRegisteredException;
  * @author: zheng-fx
  * @time: 2019/12/15 0015 16:43
  */
-
+//开启方法级得注解式动态授权 @PreAuthorize("hasAnyAuthority('sys:user:add')")
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -86,9 +88,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/treetable-lay/**",
                         "/ztree/**",
                         "/static/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+                .permitAll()//表示上面的资源不去验证
+                .anyRequest()//任何请求
+                .authenticated();//任何请求都需要验证
         //指向自定义的登陆页面
         http.formLogin()
                 .loginPage("/login.html")//页面

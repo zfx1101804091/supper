@@ -23,14 +23,8 @@ public class LoginUser extends SysUser implements UserDetails {
 
     private List<SysPermission> permissions;
     
-    //返回已经认证授予的权限
-   /* @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        
-        return permissions.parallelStream().filter(p -> !StringUtils.isEmpty(p.getPermission()))
-                .map(p -> new SimpleGrantedAuthority(p.getPermission())).collect(Collectors.toSet());
-    }*/
+    //返回已经认证授予的权限（获取权限集合）
+    //这里应用了java8的新特性stream流的写法；filter里时筛选条件，map是将p.getPermission()转换类型
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

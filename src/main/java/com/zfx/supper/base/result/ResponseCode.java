@@ -17,9 +17,8 @@ public enum ResponseCode {
 	EMAIL_REPEAT(5000102,"邮箱已存在"),
 	//用户-角色
 	//5000201 - 5000300
-	USER_ROLE_NO_CLEAR(5000201,"该角色存在用户关联，无法删除")
-
-;
+	USER_ROLE_NO_CLEAR(5000201,"该角色存在用户关联，无法删除");
+	
 	private Integer code;
 	
 	private String message;
