@@ -12,6 +12,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @description:
+ *  TODO 解决代码自动生成器字段里默认值为空，不能生成代码问题
+ *      private List<String> beanFieldValue; dto里List中只有一个值或无值导致
  * @author: zheng-fx
  * @time: 2020/3/14 0014 17:33
  */
